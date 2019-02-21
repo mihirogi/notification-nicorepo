@@ -8,12 +8,16 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile (
+    compile(
         'com.amazonaws:aws-lambda-java-core:1.1.0',
         'com.amazonaws:aws-lambda-java-log4j:1.0.0',
         'com.fasterxml.jackson.core:jackson-core:2.8.5',
         'com.fasterxml.jackson.core:jackson-databind:2.8.5',
         'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+    )
+    testCompile(
+        'junit:junit:4.12',
+        'org.hamcrest:hamcrest-core:2.1'
     )
 }
 
