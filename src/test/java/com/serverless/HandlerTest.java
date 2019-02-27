@@ -4,6 +4,8 @@ import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.serverless.nicorepo.client.NiconicoClient;
 import org.junit.Test;
@@ -26,7 +28,6 @@ public class HandlerTest {
         assertThat(response.getBody(), equalTo("{\"message\":\"Hello Lambda!\",\"input\":{}}"));
     }
 
-
     @Test
     public void ニコニコ動画にログインできる() throws UnirestException {
 
@@ -34,6 +35,17 @@ public class HandlerTest {
         NiconicoClient client = new NiconicoClient("test", "test");
         client.login();
         assertThat(client.isLoggedIn(), is(true));
+    }
+
+    @Test
+    public void ニコレポを取得できる() throws UnirestException {
+
+        NiconicoClient client = new NiconicoClient("test", "test");
+        client.login();
+        HttpResponse<JsonNode> nicorepo = client.getNicorepo();
+        System.out.println(nicorepo.getBody());
+        assertThat(nicorepo.getStatus(), is(200));
+        assertThat(nicorepo.getBody(), is(notNullValue()));
     }
 
     private Context createContext() {

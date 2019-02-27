@@ -32,4 +32,10 @@ public class NiconicoClient {
         return cookie != null;
     }
 
+    public HttpResponse<JsonNode> getNicorepo() throws UnirestException {
+        return Unirest.get(NiconicoAPI.NICOREPO.getUrlText())
+                .header("Cookie", cookie)
+                .asJson();
+
+    }
 }
