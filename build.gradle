@@ -13,7 +13,8 @@ dependencies {
         'com.amazonaws:aws-lambda-java-log4j:1.0.0',
         'com.fasterxml.jackson.core:jackson-core:2.8.5',
         'com.fasterxml.jackson.core:jackson-databind:2.8.5',
-        'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+        'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
+        'com.mashape.unirest:unirest-java:1.4.9'
     )
     testCompile(
         'junit:junit:4.12',

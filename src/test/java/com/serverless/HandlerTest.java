@@ -4,6 +4,8 @@ import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.serverless.nicorepo.client.NiconicoClient;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -21,7 +23,17 @@ public class HandlerTest {
 
         ApiGatewayResponse response = target.handleRequest(input, createContext());
         assertThat(response, is(notNullValue()));
-        assertThat(response.getBody(),equalTo("{\"message\":\"Hello Lambda!\",\"input\":{}}"));
+        assertThat(response.getBody(), equalTo("{\"message\":\"Hello Lambda!\",\"input\":{}}"));
+    }
+
+
+    @Test
+    public void ニコニコ動画にログインできる() throws UnirestException {
+
+        //TODO: 環境変数か、外部ファイルから読み込むようにする
+        NiconicoClient client = new NiconicoClient("test", "test");
+        client.login();
+        assertThat(client.isLoggedIn(), is(true));
     }
 
     private Context createContext() {
