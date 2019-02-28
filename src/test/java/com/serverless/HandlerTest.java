@@ -27,29 +27,6 @@ public class HandlerTest {
         assertThat(response.getBody(), equalTo("{\"message\":\"Hello Lambda!\",\"input\":{}}"));
     }
 
-    @Test
-    public void ニコニコ動画にログインできる() throws UnirestException {
-
-        //TODO: 環境変数か、外部ファイルから読み込むようにする
-        NiconicoClient client = createNiconicoClient();
-        client.login();
-        assertThat(client.isLoggedIn(), is(true));
-    }
-
-    @Test
-    public void ニコレポを取得できる() throws UnirestException {
-
-        NiconicoClient client = createNiconicoClient();
-        client.login();
-        Nicorepo nicorepo = client.getNicorepo();
-        assertThat(nicorepo.getNicorepoStatusCode(), is(200));
-        assertThat(nicorepo.getReports(), is(notNullValue()));
-    }
-
-    private NiconicoClient createNiconicoClient() {
-        return new NiconicoClient("test", "test");
-    }
-
     private Context createContext() {
         return new Context() {
             @Override
