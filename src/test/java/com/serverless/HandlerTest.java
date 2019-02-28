@@ -4,10 +4,9 @@ import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.serverless.nicorepo.client.NiconicoClient;
+import com.serverless.nicorepo.model.Nicorepo;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class HandlerTest {
     public void ニコニコ動画にログインできる() throws UnirestException {
 
         //TODO: 環境変数か、外部ファイルから読み込むようにする
-        NiconicoClient client = new NiconicoClient("test", "test");
+        NiconicoClient client = createNiconicoClient();
         client.login();
         assertThat(client.isLoggedIn(), is(true));
     }
@@ -40,12 +39,15 @@ public class HandlerTest {
     @Test
     public void ニコレポを取得できる() throws UnirestException {
 
-        NiconicoClient client = new NiconicoClient("test", "test");
+        NiconicoClient client = createNiconicoClient();
         client.login();
-        HttpResponse<JsonNode> nicorepo = client.getNicorepo();
-        System.out.println(nicorepo.getBody());
-        assertThat(nicorepo.getStatus(), is(200));
-        assertThat(nicorepo.getBody(), is(notNullValue()));
+        Nicorepo nicorepo = client.getNicorepo();
+        assertThat(nicorepo.getNicorepoStatusCode(), is(200));
+        assertThat(nicorepo.getReports(), is(notNullValue()));
+    }
+
+    private NiconicoClient createNiconicoClient() {
+        return new NiconicoClient("test", "test");
     }
 
     private Context createContext() {

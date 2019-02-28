@@ -5,6 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.serverless.nicorepo.api.NiconicoAPI;
+import com.serverless.nicorepo.model.Nicorepo;
 
 public class NiconicoClient {
 
@@ -32,10 +33,11 @@ public class NiconicoClient {
         return cookie != null;
     }
 
-    public HttpResponse<JsonNode> getNicorepo() throws UnirestException {
-        return Unirest.get(NiconicoAPI.NICOREPO.getUrlText())
+    public Nicorepo getNicorepo() throws UnirestException {
+        HttpResponse<JsonNode> jsonNodeHttpResponse = Unirest.get(NiconicoAPI.NICOREPO.getUrlText())
                 .header("Cookie", cookie)
                 .asJson();
+        return new Nicorepo(jsonNodeHttpResponse);
 
     }
 }
