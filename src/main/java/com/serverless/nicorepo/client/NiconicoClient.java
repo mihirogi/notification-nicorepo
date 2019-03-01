@@ -37,7 +37,7 @@ public class NiconicoClient {
         HttpResponse<JsonNode> jsonNodeHttpResponse = Unirest.get(NiconicoAPI.NICOREPO.getUrlText())
                 .header("Cookie", cookie)
                 .asJson();
-        return new Nicorepo(jsonNodeHttpResponse);
+        return new Nicorepo(jsonNodeHttpResponse.getBody().getObject(), jsonNodeHttpResponse.getStatus());
 
     }
 }
