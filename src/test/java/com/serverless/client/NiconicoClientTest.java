@@ -28,7 +28,6 @@ public class NiconicoClientTest {
     }
 
     private NiconicoClient createNiconicoClient() {
-        //TODO: 環境変数か、外部ファイルから読み込むようにする
-        return new NiconicoClient("test", "test");
+        return new NiconicoClient(System.getenv("NICONICO_MAILADDRESS"), System.getenv("NICONICO_PASSWORD"));
     }
 }
