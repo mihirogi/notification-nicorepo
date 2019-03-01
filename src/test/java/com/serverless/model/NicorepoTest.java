@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,8 @@ public class NicorepoTest {
     public void ニコレポの21時から22時の間の1件だけをフィルタして取り出せる() throws IOException {
         JSONObject jsonObject = new JSONObject(createNicorepoJson());
         Nicorepo nicorepo = new Nicorepo(jsonObject, 200);
-        List<JSONObject> filterdReports = nicorepo.getReportsAfterDatetime("2019-02-27T18:00:08.594+09:00");
+        List<JSONObject> filterdReports = nicorepo.getReportsAfterDatetime(LocalDateTime.of(2019, 2, 27, 21, 0, 0));
+
         assertThat(filterdReports.size(), is(1));
     }
 

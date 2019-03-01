@@ -3,8 +3,8 @@ package com.serverless.nicorepo.model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -26,20 +26,17 @@ public class Nicorepo {
         return this.statusCode;
     }
 
-    public List<JSONObject> getReportsAfterDatetime(String datetime) {
+    public List<JSONObject> getReportsAfterDatetime(LocalDateTime datetime) {
         JSONArray array = (JSONArray) reports.get("data");
-        SimpleDateFormat stringParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         List<JSONObject> filterdReports = StreamSupport.stream(array.spliterator(), false)
                 .map(JSONObject.class::cast)
-                .filter(node -> {
-                    try {
-                        return stringParser.parse(node.get("createdAt").toString())
-                                .after(stringParser.parse(datetime));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
-                })
+                .filter(node ->
+                        LocalDateTime.parse(
+                                node.get("createdAt").toString(),
+                                DateTimeFormatter.ISO_ZONED_DATE_TIME
+                        )
+                        .isAfter(datetime)
+                )
                 .collect(Collectors.toList());
         return filterdReports;
     }
