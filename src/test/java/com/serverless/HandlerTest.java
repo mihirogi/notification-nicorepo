@@ -4,27 +4,17 @@ import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.serverless.nicorepo.client.NiconicoClient;
-import com.serverless.nicorepo.model.Nicorepo;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
-
 public class HandlerTest {
 
     @Test
-    public void test200okResponse() {
-        Handler target = new Handler();
-        Map input = new HashMap<String, Object>();
-
-        ApiGatewayResponse response = target.handleRequest(input, createContext());
-        assertThat(response, is(notNullValue()));
-        assertThat(response.getBody(), equalTo("{\"message\":\"Hello Lambda!\",\"input\":{}}"));
+    public void ニコレポがDiscordに通知される() {
+        Handler handler = new Handler();
+        handler.handleRequest("test",createContext());
     }
 
     private Context createContext() {
