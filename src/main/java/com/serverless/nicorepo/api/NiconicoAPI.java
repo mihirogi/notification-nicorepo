@@ -3,7 +3,8 @@ package com.serverless.nicorepo.api;
 public enum NiconicoAPI {
 
     LOGIN("https://secure.nicovideo.jp/secure/login?site=niconico"),
-    NICOREPO("http://www.nicovideo.jp/api/nicorepo/timeline/my/all?client_app=pc_myrepo");
+    NICOREPO("http://www.nicovideo.jp/api/nicorepo/timeline/my/all?client_app=pc_myrepo"),
+    WATCH_PAGE("https://www.nicovideo.jp/watch/");
 
     private final String url;
 
