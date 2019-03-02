@@ -14,7 +14,9 @@ public class HandlerTest {
     @Test
     public void ニコレポがDiscordに通知される() {
         Handler handler = new Handler();
-        handler.handleRequest("test",createContext());
+        Map<String,Object> input = new HashMap<>();
+        input.put("cmd","start");
+        handler.handleRequest(input,createContext());
     }
 
     private Context createContext() {
