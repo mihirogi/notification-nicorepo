@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export DISCORD_WEBHOOK_ENDPOINT=This_attribute_is_Webhook_URL_of_Discord
+export NICONICO_MAILADDRESS=This_attribute_is_login_mailaddress_of_Niconicodouga
+export NICONICO_PASSWORD=This_attribute_is_login_password_of_Niconicodouga
