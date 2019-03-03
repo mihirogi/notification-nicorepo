@@ -41,5 +41,14 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-
+          
       # run tests!
       - run: gradle test
