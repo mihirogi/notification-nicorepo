@@ -7,7 +7,7 @@ jobs:
   build:
     branches:
       only:
-        - circleci
+        - master
     docker:
       # specify the version you desire here
       - image: mihirogi/openjdk8-serverless
