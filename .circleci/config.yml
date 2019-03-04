@@ -52,4 +52,5 @@ jobs:
 
       # run tests!
       - run: gradle test
-      - run: sls -v
+      - run: sls config credentials -k ${AWS_ACCESS_KEY} -s ${AWS_SECRET_KEY} -p aws
+      - run: sls deploy
