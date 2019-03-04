@@ -5,6 +5,7 @@
 AWS Lambdaに、Serverless Frameworkを使ってコードをデプロイします。
 
 
+
 ## プロジェクトの準備
 ### ローカルで動かす場合
 
