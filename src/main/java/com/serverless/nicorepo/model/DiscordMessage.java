@@ -4,13 +4,13 @@ import org.json.JSONObject;
 
 public class DiscordMessage {
 
-    private JSONObject message;
+  private JSONObject message;
 
-    public DiscordMessage(JSONObject message) {
-        this.message = message;
-    }
+  public DiscordMessage(JSONObject message) {
+    this.message = message;
+  }
 
-    public JSONObject getMessage() {
-        return message;
-    }
+  public JSONObject getMessage() {
+    return message;
+  }
 }
