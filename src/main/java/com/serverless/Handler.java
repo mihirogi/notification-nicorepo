@@ -1,25 +1,38 @@
 package com.serverless;
 
-import java.util.Collections;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.serverless.nicorepo.client.DiscordClient;
+import com.serverless.nicorepo.client.NiconicoClient;
+import com.serverless.nicorepo.client.type.NiconicoTopic;
+import com.serverless.nicorepo.model.Nicorepo;
+import org.apache.log4j.Logger;
 
-public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
 
-	private static final Logger LOG = Logger.getLogger(Handler.class);
+public class Handler implements RequestHandler<Map<String, Object>, String> {
 
-	@Override
-	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
-		LOG.info("received: " + input);
-		Response responseBody = new Response("Go Serverless v1.x! Your function executed successfully!", input);
-		return ApiGatewayResponse.builder()
-				.setStatusCode(200)
-				.setObjectBody(responseBody)
-				.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-				.build();
-	}
+    private static final Logger LOG = Logger.getLogger(Handler.class);
+
+    public String handleRequest(Map<String, Object> input, Context context) {
+        LOG.info("START");
+        NiconicoClient niconicoClient = new NiconicoClient(System.getenv("NICONICO_MAILADDRESS"),
+                System.getenv("NICONICO_PASSWORD"));
+        DiscordClient discordClient = new DiscordClient(System.getenv("DISCORD_WEBHOOK_ENDPOINT"));
+        try {
+            niconicoClient.login();
+            Nicorepo nicorepo = niconicoClient.getNicorepo();
+            discordClient.postMessage(nicorepo.createDiscordMessage(
+                    LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minusHours(1),
+                    NiconicoTopic.UPLOAD
+            ));
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        return "200";
+    }
 }
