@@ -10,7 +10,7 @@ jobs:
         - circleci
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
+      - image: mihirogi/openjdk8-serverless
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -49,6 +49,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-
-          
+
       # run tests!
       - run: gradle test
+      - run: sls -v
