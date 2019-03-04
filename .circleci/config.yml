@@ -53,4 +53,5 @@ jobs:
       # run tests!
       - run: gradle test
       - run: sls config credentials -k ${AWS_ACCESS_KEY} -s ${AWS_SECRET_KEY} -p aws
+      - run: gradle buildZip
       - run: sls deploy --mail $NICONICO_MAILADDRESS --password $NICONICO_PASSWORD  --webhook $DISCORD_WEBHOOK_ENDPOINT
