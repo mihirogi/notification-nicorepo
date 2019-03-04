@@ -14,19 +14,4 @@ public enum NiconicoAPI {
   public String getUrlText() {
     return this.url;
   }
-
-    LOGIN("https://secure.nicovideo.jp/secure/login?site=niconico"),
-    NICOREPO("http://www.nicovideo.jp/api/nicorepo/timeline/my/all?client_app=pc_myrepo"),
-    WATCH_PAGE("https://www.nicovideo.jp/watch/");
-
-    private final String url;
-
-
-    private NiconicoAPI(String url) {
-        this.url = url;
-    }
-
-    public String getUrlText() {
-        return this.url;
-    }
 }
