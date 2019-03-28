@@ -6,6 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.serverless.nicorepo.client.DiscordClient;
 import com.serverless.nicorepo.client.NiconicoClient;
 import com.serverless.nicorepo.client.type.NiconicoTopic;
+import com.serverless.nicorepo.model.DiscordMessage;
 import com.serverless.nicorepo.model.Nicorepo;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -25,10 +26,14 @@ public class Handler implements RequestHandler<Map<String, Object>, String> {
     try {
       niconicoClient.login();
       Nicorepo nicorepo = niconicoClient.getNicorepo();
-      discordClient.postMessage(
+      DiscordMessage message =
           nicorepo.createDiscordMessage(
               LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minusHours(1),
-              NiconicoTopic.UPLOAD));
+              NiconicoTopic.UPLOAD);
+      if (message.hasMessage()) {
+        discordClient.postMessage(message);
+      }
+
     } catch (UnirestException e) {
       e.printStackTrace();
     }

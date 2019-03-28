@@ -31,6 +31,10 @@ public class Nicorepo {
       LocalDateTime localDateTime, NiconicoTopic niconicoTopic) {
     List<JSONObject> filterdReports = filterNicorepo(localDateTime, niconicoTopic);
 
+    if (filterdReports.size() == 0) {
+      return new DiscordMessage(null);
+    }
+
     JSONObject messageRoot = new JSONObject();
     messageRoot.put("content", localDateTime + "の投稿についてのお知らせです！");
 
