@@ -14,9 +14,6 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies-
       - run:
-          name: gradle dependencies
-          command: gradle dependencies
-      - run:
           name: gradle compile and test
           command: gradle build
       - save_cache:
