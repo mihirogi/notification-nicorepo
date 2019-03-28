@@ -21,6 +21,10 @@ jobs:
           paths:
             - .gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
+      - persist_to_workspace:
+          root: . # workspaceのrootパス（絶対パスかworking_directoryからの相対パス）
+          paths:
+            - . # 共有するパス（絶対パスかrootからの相対パス）
   deploy:
     docker:
       - image: mihirogi/openjdk8-serverless
@@ -28,7 +32,10 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
+      GRADLE_USER_HOME: /repo/.gradle
     steps:
+      - attach_workspace: # workspaceをアタッチする
+          at: .
       - run:
           name: create aws credentials
           command: sls config credentials -k ${AWS_ACCESS_KEY} -s ${AWS_SECRET_KEY} -p aws
@@ -38,14 +45,14 @@ jobs:
       - run:
           name: deploy aws
           command: sls deploy --mail $NICONICO_MAILADDRESS --password $NICONICO_PASSWORD  --webhook $DISCORD_WEBHOOK_ENDPOINT
-  workflows:
-    version: 2
-    build-test-and-deploy:
-      jobs:
-        - build
-        - deploy:
-            requires:
-              - build
-            filters:
-              branches:
-                only: master
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
