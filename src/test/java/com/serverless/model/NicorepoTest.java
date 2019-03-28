@@ -49,6 +49,18 @@ public class NicorepoTest {
     assertThat(message.getMessage().getJSONArray("embeds").length(), is(1));
   }
 
+  @Test
+  public void ニコレポが0件なのでDiscord用オブジェクトを生成してメッセージが存在しない()
+      throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    LocalDateTime localDateTime = LocalDateTime.of(2019, 2, 28, 6, 0, 0);
+    JSONObject jsonObject = new JSONObject(createNicorepoJson());
+
+    Nicorepo nicorepo = new Nicorepo(jsonObject, 200);
+    DiscordMessage message = nicorepo.createDiscordMessage(localDateTime, NiconicoTopic.UPLOAD);
+
+    assertThat(message.hasMessage(), is(false));
+  }
+
   private String createNicorepoJson() throws IOException {
     return Files.lines(Paths.get("document/nicorepo-response.json"), Charset.forName("UTF-8"))
         .collect(Collectors.joining(System.getProperty("line.separator")));
