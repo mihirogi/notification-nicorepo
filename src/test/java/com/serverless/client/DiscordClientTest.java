@@ -7,7 +7,6 @@ import com.serverless.nicorepo.client.DiscordClient;
 import com.serverless.nicorepo.client.type.NiconicoTopic;
 import com.serverless.nicorepo.model.DiscordMessage;
 import com.serverless.nicorepo.model.Nicorepo;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
