@@ -1,57 +1,57 @@
-# Java Gradle CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
 version: 2
 jobs:
   build:
-    branches:
-      only:
-        - master
     docker:
-      # specify the version you desire here
       - image: mihirogi/openjdk8-serverless
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
     working_directory: ~/repo
-
     environment:
-      # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.gradle" }}
-            # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
-      - run: gradle dependencies
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-
       - run:
-          name: Install Serverless CLI and dependencies
-          command: |
-            sudo npm i -g serverless
+          name: gradle compile and test
+          command: gradle build
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-
-
-      # run tests!
-      - run: gradle test
-      - run: sls config credentials -k ${AWS_ACCESS_KEY} -s ${AWS_SECRET_KEY} -p aws
-      - run: gradle buildZip
-      - run: sls deploy --mail $NICONICO_MAILADDRESS --password $NICONICO_PASSWORD  --webhook $DISCORD_WEBHOOK_ENDPOINT
+            - .gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  deploy:
+    docker:
+      - image: mihirogi/openjdk8-serverless
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+      GRADLE_USER_HOME: /repo/.gradle
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: create aws credentials
+          command: sls config credentials -k ${AWS_ACCESS_KEY} -s ${AWS_SECRET_KEY} -p aws
+      - run:
+          name: create artifact
+          command: gradle buildZip
+      - run:
+          name: deploy aws
+          command: sls deploy --mail $NICONICO_MAILADDRESS --password $NICONICO_PASSWORD  --webhook $DISCORD_WEBHOOK_ENDPOINT
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
